@@ -1,0 +1,203 @@
+<head>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="body-hp">
+            <div id="body-hp-2">
+                <div id="header">
+                    <div id="header-title">Dashboard</div>
+                    <div style="font-size: 20px;color: white; margin-top: 39px;margin-bottom: 10px;">Uang bulanan</div>
+                    <div style="background-color: rgb(93, 232, 36); width: 100px; height: 5px;"></div>
+                    <div style="display: flex;flex-direction: row;text-align: end;">
+                        <div style="color: white;text-align: end;padding-top: 25px;font-size: 19px;">
+                            Rp.</div>
+                        <div id="current-money" style="color: white;font-size: 50px;font-weight: 500;">80.000.000</div>
+                    </div>
+                </div>
+                <div id="transaction-card-home"></div>
+                <div style="width: 95%;height: 75px; border-radius: 20px;background-color: rgb(78, 78, 78);display: flex;
+            flex-direction: row;justify-content: center;
+            margin: 0 auto;margin-top: 10px;">
+                    <div style="padding: 10px 20px 10px 20px;display: flex;
+                flex-direction: column;
+                justify-content: center;color: white">
+                        <img src="assets/home_white.svg" style="width: 30px;margin: 0 auto;"
+                            alt="Kiwi standing on oval">
+                        <div style="font-size: 14px;">Home</div>
+                    </div>
+                    <div style="padding: 10px 20px 10px 20px;display: flex;
+                flex-direction: column;
+                justify-content: center;color: white">
+                        <img src="assets/expense_white.svg" style="width: 30px;margin: 0 auto;"
+                            alt="Kiwi standing on oval">
+                        <div style="font-size: 14px;">Expenses</div>
+                    </div>
+                    <div style="padding: 10px 20px 10px 20px;display: flex;
+                flex-direction: column;
+                justify-content: center;color: white">
+                        <img src="assets/income_white.svg" style="width: 30px;margin: 0 auto;"
+                            alt="Kiwi standing on oval">
+                        <div style="font-size: 14px;">Income</div>
+                    </div>
+                    <div style="padding: 10px 20px 10px 20px;display: flex;
+                flex-direction: column;
+                justify-content: center;color: white">
+                        <img src="assets/wallet_white.svg" style="width: 30px;margin: 0 auto;"
+                            alt="Kiwi standing on oval">
+                        <div style="font-size: 14px;">Wallet</div>
+                    </div>
+                </div>
+            </div>
+            <div id="notch"></div>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById("current-money").innerHTML = "100.000.000";
+    const cards = [
+        {
+            "title": "Last 3 Transations",
+            "type": "all",
+            "items": [
+                {
+                    "name": "Tagihan kartu kredit",
+                    "date": "4 April 2020",
+                    "money": "-169.000"
+                },
+                {
+                    "name": "Gajian proyek",
+                    "date": "4 April 2020",
+                    "money": "+5.000.000"
+                },
+                {
+                    "name": "Dividen saham",
+                    "date": "4 April 2020",
+                    "money": "+200.000"
+                }
+            ]
+        },
+        {
+            "title": "Last 3 Expenses",
+            "type": "expense",
+            "items": [
+                {
+                    "name": "Tagihan kartu kredit",
+                    "date": "4 April 2020",
+                    "money": "-169.000"
+                },
+                {
+                    "name": "Isi ewallet",
+                    "date": "4 April 2020",
+                    "money": "-200.000"
+                },
+                {
+                    "name": "Jajan siomay",
+                    "date": "4 April 2020",
+                    "money": "-25.000"
+                },
+            ]
+        },
+        {
+            "title": "Last 3 Incomes",
+            "type": "income",
+            "items": [
+                {
+                    "name": "Gajian proyek",
+                    "date": "4 April 2020",
+                    "money": "+5.000.000"
+                },
+                {
+                    "name": "Dividen saham",
+                    "date": "4 April 2020",
+                    "money": "+200.000"
+                },
+            ]
+        },
+    ];
+
+
+    var style = document.createElement('style');
+    style.innerHTML =
+        '.expense-number {color: rgb(255, 83, 83);font-weight: 600;font-size: 18px;} .income-number {color: rgb(93, 232, 36);font-weight: 600;font-size: 18px;}';
+
+    var ref = document.querySelector('script');
+
+    ref.parentNode.insertBefore(style, ref);
+
+    let ul = document.createElement('ul');
+    ul.className = "flex-container";
+
+    document.getElementById('transaction-card-home').appendChild(ul);
+
+    cards.forEach(function (item) {
+        let li = document.createElement('li');
+        li.className = "flex-item";
+
+        let divTitle = document.createElement('div');
+        divTitle.style.fontSize = "23px";
+        divTitle.style.color = "white";
+        divTitle.style.fontWeight = "800";
+        divTitle.style.marginBottom = "10px";
+
+        divTitle.innerHTML = item.title;
+
+        li.appendChild(divTitle);
+        let titleBar = document.createElement('div');
+        titleBar.style.width = "100px";
+        titleBar.style.height = "5px";
+
+        if (item.type === 'expense') {
+            titleBar.style.backgroundColor = "rgb(255, 83, 83)";
+        } else {
+            titleBar.style.backgroundColor = "rgb(93, 232, 36)";
+        }
+        li.appendChild(titleBar);
+
+        let ulItem = document.createElement('ul');
+        ulItem.className = "transcation-home-container";
+
+        item.items.forEach(data => {
+            let li = document.createElement('li');
+            li.className = "transcation-home-item";
+
+            let divItemTitle = document.createElement('div');
+            divItemTitle.style.fontWeight = "600";
+            divItemTitle.style.fontSize = "18px";
+            divItemTitle.innerHTML = data.name;
+
+            li.appendChild(divItemTitle);
+
+            let divItemDate = document.createElement('div');
+            divItemDate.innerHTML = data.date;
+
+            li.appendChild(divItemDate);
+
+            let divItemNumber = document.createElement('div');
+            switch (item.type) {
+                case "expense":
+                    divItemNumber.className = "expense-number";
+                    break;
+
+                default:
+                    divItemNumber.className = "income-number";
+                    break;
+            }
+            divItemNumber.innerHTML = data.money;
+            li.appendChild(divItemNumber);
+
+            ulItem.appendChild(li);
+
+        });
+
+        li.appendChild(ulItem);
+        let loadMoreButton = document.createElement('div');
+        loadMoreButton.className = "see-all-button";
+        loadMoreButton.innerHTML = "See all"
+
+        li.appendChild(loadMoreButton);
+
+        ul.appendChild(li);
+    });
+</script>
