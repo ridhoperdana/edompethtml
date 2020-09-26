@@ -56,67 +56,87 @@
 </body>
 <script>
     document.getElementById("current-money").innerHTML = "100.000.000";
-    const cards = [
-        {
-            "title": "Last 3 Transations",
-            "type": "all",
-            "items": [
-                {
-                    "name": "Tagihan kartu kredit",
-                    "date": "4 April 2020",
-                    "money": "-169.000"
-                },
-                {
-                    "name": "Gajian proyek",
-                    "date": "4 April 2020",
-                    "money": "+5.000.000"
-                },
-                {
-                    "name": "Dividen saham",
-                    "date": "4 April 2020",
-                    "money": "+200.000"
-                }
-            ]
-        },
-        {
-            "title": "Last 3 Expenses",
-            "type": "expense",
-            "items": [
-                {
-                    "name": "Tagihan kartu kredit",
-                    "date": "4 April 2020",
-                    "money": "-169.000"
-                },
-                {
-                    "name": "Isi ewallet",
-                    "date": "4 April 2020",
-                    "money": "-200.000"
-                },
-                {
-                    "name": "Jajan siomay",
-                    "date": "4 April 2020",
-                    "money": "-25.000"
-                },
-            ]
-        },
-        {
-            "title": "Last 3 Incomes",
-            "type": "income",
-            "items": [
-                {
-                    "name": "Gajian proyek",
-                    "date": "4 April 2020",
-                    "money": "+5.000.000"
-                },
-                {
-                    "name": "Dividen saham",
-                    "date": "4 April 2020",
-                    "money": "+200.000"
-                },
-            ]
-        },
-    ];
 
+    const Http = new XMLHttpRequest();
+    const url = 'https://api.jsonbin.io/b/5f6ecbae302a837e956dfb58';
+    Http.open("GET", url);
+    Http.setRequestHeader("secret-key", "$2b$10$TRBhEV8ibWX4eCWrWv1Lq.t0GdpXeyCfa2MmNzqnpmq0RnrZBepS.");
+    Http.send();
+
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            const cards = JSON.parse(Http.responseText);
+            cards.forEach(function (item) {
+                let li = document.createElement('li');
+                li.className = "flex-item";
+
+                let divTitle = document.createElement('div');
+                divTitle.style.fontSize = "23px";
+                divTitle.style.color = "white";
+                divTitle.style.fontWeight = "800";
+                divTitle.style.marginBottom = "10px";
+
+                divTitle.innerHTML = item.title;
+
+                li.appendChild(divTitle);
+                let titleBar = document.createElement('div');
+                titleBar.style.width = "100px";
+                titleBar.style.height = "5px";
+
+                if (item.type === 'expense') {
+                    titleBar.style.backgroundColor = "rgb(255, 83, 83)";
+                } else {
+                    titleBar.style.backgroundColor = "rgb(93, 232, 36)";
+                }
+                li.appendChild(titleBar);
+
+                let ulItem = document.createElement('ul');
+                ulItem.className = "transcation-home-container";
+
+                item.items.forEach(data => {
+                    let li = document.createElement('li');
+                    li.className = "transcation-home-item";
+
+                    let divItemTitle = document.createElement('div');
+                    divItemTitle.style.fontWeight = "600";
+                    divItemTitle.style.fontSize = "18px";
+                    divItemTitle.innerHTML = data.name;
+
+                    li.appendChild(divItemTitle);
+
+                    let divItemDate = document.createElement('div');
+                    divItemDate.innerHTML = data.date;
+
+                    li.appendChild(divItemDate);
+
+                    let divItemNumber = document.createElement('div');
+                    switch (item.type) {
+                        case "expense":
+                            divItemNumber.className = "expense-number";
+                            break;
+
+                        default:
+                            divItemNumber.className = "income-number";
+                            break;
+                    }
+                    divItemNumber.innerHTML = data.money;
+                    li.appendChild(divItemNumber);
+
+                    ulItem.appendChild(li);
+
+                });
+
+                li.appendChild(ulItem);
+                let loadMoreButton = document.createElement('div');
+                loadMoreButton.className = "see-all-button";
+                loadMoreButton.innerHTML = "See all"
+
+                li.appendChild(loadMoreButton);
+
+                ul.appendChild(li);
+            });
+        }
+    }
 
     var style = document.createElement('style');
     style.innerHTML =
@@ -130,74 +150,4 @@
     ul.className = "flex-container";
 
     document.getElementById('transaction-card-home').appendChild(ul);
-
-    cards.forEach(function (item) {
-        let li = document.createElement('li');
-        li.className = "flex-item";
-
-        let divTitle = document.createElement('div');
-        divTitle.style.fontSize = "23px";
-        divTitle.style.color = "white";
-        divTitle.style.fontWeight = "800";
-        divTitle.style.marginBottom = "10px";
-
-        divTitle.innerHTML = item.title;
-
-        li.appendChild(divTitle);
-        let titleBar = document.createElement('div');
-        titleBar.style.width = "100px";
-        titleBar.style.height = "5px";
-
-        if (item.type === 'expense') {
-            titleBar.style.backgroundColor = "rgb(255, 83, 83)";
-        } else {
-            titleBar.style.backgroundColor = "rgb(93, 232, 36)";
-        }
-        li.appendChild(titleBar);
-
-        let ulItem = document.createElement('ul');
-        ulItem.className = "transcation-home-container";
-
-        item.items.forEach(data => {
-            let li = document.createElement('li');
-            li.className = "transcation-home-item";
-
-            let divItemTitle = document.createElement('div');
-            divItemTitle.style.fontWeight = "600";
-            divItemTitle.style.fontSize = "18px";
-            divItemTitle.innerHTML = data.name;
-
-            li.appendChild(divItemTitle);
-
-            let divItemDate = document.createElement('div');
-            divItemDate.innerHTML = data.date;
-
-            li.appendChild(divItemDate);
-
-            let divItemNumber = document.createElement('div');
-            switch (item.type) {
-                case "expense":
-                    divItemNumber.className = "expense-number";
-                    break;
-
-                default:
-                    divItemNumber.className = "income-number";
-                    break;
-            }
-            divItemNumber.innerHTML = data.money;
-            li.appendChild(divItemNumber);
-
-            ulItem.appendChild(li);
-
-        });
-
-        li.appendChild(ulItem);
-        let loadMoreButton = document.createElement('div');
-        loadMoreButton.className = "see-all-button";
-        loadMoreButton.innerHTML = "See all"
-
-        li.appendChild(loadMoreButton);
-
-        ul.appendChild(li);
-    });
 </script>
